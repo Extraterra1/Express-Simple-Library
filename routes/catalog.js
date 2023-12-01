@@ -4,7 +4,7 @@ const router = express.Router();
 const authorController = require('../controllers/authorController');
 const bookController = require('../controllers/bookController');
 const bookInstanceController = require('../controllers/bookInstanceController');
-const genreController = require('../controllers/authorController');
+const genreController = require('../controllers/genreController');
 
 /// BOOK ROUTES ///
 
@@ -61,7 +61,7 @@ router.get('/author/:id', authorController.author_detail);
 // GET request for list of all Authors.
 router.get('/authors', authorController.author_list);
 
-/// GENRE ROUTES ///
+// GENRE ROUTES //
 
 // GET request for creating a Genre. NOTE This must come before route that displays Genre (uses id).
 router.get('/genre/create', genreController.genre_create_get);
