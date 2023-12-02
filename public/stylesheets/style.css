@@ -2,10 +2,6 @@ body {
   min-height: 100vh;
 }
 
-.main {
-  flex-grow: 1;
-}
-
 .sidebar-nav {
   margin-top: 20px;
   padding: 0;
