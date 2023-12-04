@@ -1,5 +1,6 @@
 const BookInstance = require('../models/bookInstanceModel.js');
 const asyncHandler = require('express-async-handler');
+const mongoose = require('mongoose');
 
 // Display list of all BookInstances.
 exports.bookinstance_list = asyncHandler(async (req, res, next) => {
@@ -9,7 +10,20 @@ exports.bookinstance_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific BookInstance.
 exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: BookInstance detail: ${req.params.id}`);
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    const err = new Error('Author not found');
+    err.status = 404;
+    return next(err);
+  }
+
+  const bookInstance = await BookInstance.findById(req.params.id).populate('book');
+  res.render('bookInstanceDetail', { title: 'Book Instance | Lil Library', bookInstance });
+
+  if (bookInstance === null) {
+    const err = new Error('Author not found');
+    err.status = 404;
+    return next(err);
+  }
 });
 
 // Display BookInstance create form on GET.
