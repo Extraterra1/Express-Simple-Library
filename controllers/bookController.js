@@ -3,6 +3,7 @@ const Author = require('../models/authorModel.js');
 const BookInstance = require('../models/bookInstanceModel.js');
 const Genre = require('../models/genreModel.js');
 const asyncHandler = require('express-async-handler');
+const mongoose = require('mongoose');
 
 exports.index = asyncHandler(async (req, res, next) => {
   const [numBooks, numBookInstances, numAvailableBookInstances, numAuthors, numGenres] = await Promise.all([
@@ -32,7 +33,19 @@ exports.book_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific book.
 exports.book_detail = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: Book detail: ${req.params.id}`);
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    const err = new Error('Book not found');
+    err.status = 404;
+    return next(err);
+  }
+  const [book, bookInstances] = await Promise.all([Book.findById(req.params.id).exec(), BookInstance.find({ book: req.params.id }).exec()]);
+  if (book === null) {
+    // No results.
+    const err = new Error('Book not found');
+    err.status = 404;
+    return next(err);
+  }
+  res.render('bookDetail', { title: `${book.title} | Lil Library`, book, bookInstances });
 });
 
 // Display book create form on GET.
