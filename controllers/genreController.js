@@ -1,6 +1,7 @@
 const Genre = require('../models/genreModel.js');
 const Book = require('../models/bookModel.js');
 const asyncHandler = require('express-async-handler');
+const mongoose = require('mongoose');
 
 // Display list of all Genre.
 exports.genre_list = asyncHandler(async (req, res, next) => {
@@ -10,7 +11,18 @@ exports.genre_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific Genre.
 exports.genre_detail = asyncHandler(async (req, res, next) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    const err = new Error('Genre not found');
+    err.status = 404;
+    return next(err);
+  }
   const [genre, booksInGenre] = await Promise.all([Genre.findById(req.params.id).exec(), Book.find({ genre: req.params.id }, 'title summary').exec()]);
+  if (genre === null) {
+    // No results.
+    const err = new Error('Genre not found');
+    err.status = 404;
+    return next(err);
+  }
   res.render('genreDetail', { title: `${genre.name} | Lil Library`, genre, booksInGenre });
 });
 
