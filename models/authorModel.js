@@ -29,11 +29,11 @@ authorSchema.virtual('url').get(function () {
 });
 authorSchema.virtual('formattedDob').get(function () {
   // We don't use an arrow function as we'll need the this object
-  return moment(this.date_of_birth).format('YYYY-MM-DD');
+  return this.date_of_birth ? moment(this.date_of_birth).format('YYYY/MM/DD') : 'Unknown';
 });
 authorSchema.virtual('formattedDod').get(function () {
   // We don't use an arrow function as we'll need the this object
-  return moment(this.date_of_death).format('YYYY-MM-DD');
+  return this.date_of_death ? moment(this.date_of_death).format('YYYY/MM/DD') : 'Present';
 });
 
 module.exports = mongoose.model('Author', authorSchema);

@@ -1,0 +1,11 @@
+<%- include('./partials/header.ejs', {title}) %>
+<div class="title mt-5">
+    <h4>Authors</h4>
+</div>
+
+<ul class="mt-5">
+    <% authors.forEach(author => { %>
+        <li><a href="<%= author.url %>"><%= author.name %></a><%= ` (${author.formattedDob} - ${author.formattedDod})` %></li>
+    <% }) %>
+</ul>
+<%- include('./partials/footer.ejs') %>
