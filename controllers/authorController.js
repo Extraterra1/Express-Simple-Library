@@ -1,5 +1,7 @@
 const Author = require('../models/authorModel');
+const Book = require('../models/bookModel');
 const asyncHandler = require('express-async-handler');
+const mongoose = require('mongoose');
 
 // Display list of all Authors.
 exports.author_list = asyncHandler(async (req, res, next) => {
@@ -9,6 +11,19 @@ exports.author_list = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific Author.
 exports.author_detail = asyncHandler(async (req, res, next) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    const err = new Error('Author not found');
+    err.status = 404;
+    return next(err);
+  }
+  const [author, books] = await Promise.all([Author.findById(req.params.id).exec(), Book.find({ author: req.params.id }).exec()]);
+  if (author === null) {
+    // No results.
+    const err = new Error('Author not found');
+    err.status = 404;
+    return next(err);
+  }
+  res.render('bookDetail', { title: `${author.name} | Lil Library`, author, books });
   res.send(`NOT IMPLEMENTED: Author detail: ${req.params.id}`);
 });
 
