@@ -1,0 +1,13 @@
+<%- include('./partials/header.ejs',{title}) %>
+<div class="title mt-5">
+    <h2><span class="font-weight-bold">ID: </span><%= bookInstance._id %></h2>
+</div>
+<div class="content ml-3">
+    <p><span class="font-weight-bold">Title: </span><span><a href="<%= bookInstance.book.url %>"><%= bookInstance.book.title %></a></span></p>
+    <p><span class="font-weight-bold">Imprint: </span><%= bookInstance.imprint %></p>
+    <p><span class="font-weight-bold">Status: </span><span class="<%= bookInstance.status === 'Available' ? 'text-success' : bookInstance.status === 'Maintenance' ? 'text-danger' : 'text-warning' %>"><%= bookInstance.status %></span></p>
+    <% if (bookInstance.status !== 'Available') { %>
+        <p><span class="font-weight-bold">Due Back: </span><%= bookInstance.formattedDate %></p>
+    <% } %>
+</div>
+<%- include('./partials/footer.ejs') %>
