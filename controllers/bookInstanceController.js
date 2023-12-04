@@ -1,10 +1,11 @@
 const BookInstance = require('../models/bookInstanceModel.js');
 const asyncHandler = require('express-async-handler');
+const moment = require('moment');
 
 // Display list of all BookInstances.
 exports.bookinstance_list = asyncHandler(async (req, res, next) => {
   const bookInstances = await BookInstance.find().populate('book').exec();
-  res.render('bookInstanceList', { title: 'Book Instances | Lil Library', bookInstances });
+  res.render('bookInstanceList', { title: 'Book Instances | Lil Library', bookInstances, moment });
 });
 
 // Display detail page for a specific BookInstance.
