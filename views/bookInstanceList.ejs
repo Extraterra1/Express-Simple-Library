@@ -1,0 +1,12 @@
+<%- include('./partials//header.ejs', {title}) %>
+<div class="title mt-5">
+    <h2>Book Instances</h2>
+</div>
+<ul class=" mt-5">
+    <% bookInstances.forEach(el => { %>
+        <li class="item">
+            <h4><%= el.book.title %> - <%= el.imprint %> - <span class="<%= el.status === 'Available' ? 'text-success' : el.status === 'Maintenance' ? 'text-danger' : 'text-warning' %>"><%= el.status %> <%= el.status!=='Available' && `(Due ${el.due_back})` %></span></h4>
+        </li>
+    <% }) %>
+    </ul>
+<%- include('./partials/footer.ejs') %>
