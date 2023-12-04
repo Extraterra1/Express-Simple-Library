@@ -23,8 +23,7 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
     err.status = 404;
     return next(err);
   }
-  res.render('bookDetail', { title: `${author.name} | Lil Library`, author, books });
-  res.send(`NOT IMPLEMENTED: Author detail: ${req.params.id}`);
+  res.render('authorDetail', { title: `${author.name} | Lil Library`, author, books });
 });
 
 // Display Author create form on GET.
