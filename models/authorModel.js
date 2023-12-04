@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const Schema = mongoose.Schema;
 
@@ -25,6 +26,14 @@ authorSchema.virtual('name').get(function () {
 authorSchema.virtual('url').get(function () {
   // We don't use an arrow function as we'll need the this object
   return `/catalog/author/${this._id}`;
+});
+authorSchema.virtual('formattedDob').get(function () {
+  // We don't use an arrow function as we'll need the this object
+  return moment(this.date_of_birth).format('YYYY-MM-DD');
+});
+authorSchema.virtual('formattedDod').get(function () {
+  // We don't use an arrow function as we'll need the this object
+  return moment(this.date_of_death).format('YYYY-MM-DD');
 });
 
 module.exports = mongoose.model('Author', authorSchema);
