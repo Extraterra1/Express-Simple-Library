@@ -25,7 +25,9 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 // Display list of all books.
 exports.book_list = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Book list');
+  const books = await Book.find({}, 'title author').sort({ title: 1 }).populate('author').exec();
+
+  res.render('bookList', { title: 'Books | Lil Library', books });
 });
 
 // Display detail page for a specific book.

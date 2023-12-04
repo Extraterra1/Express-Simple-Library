@@ -1,18 +1,18 @@
-<%- include('./partials/header') %>
-<div class="title">
+<%- include('./partials/header', {title}) %>
+<div class="title mt-3">
     <h1>Welcome to your Lil Library</h1>
     <p>Welcome to Lil Library, a very basic Express website developed as a tutorial example on the Mozilla Developer Network.</p>
 </div>
-<div class="counts">
+<div class="counts mt-5">
     <div class="counts-title">
         <h2>Records: </h2>
     </div>
-    <ul class="counts-list">
-        <li><span>Books: </span><%= numBooks %></li>
-        <li><span>Copies: </span><%= numBookInstances %></li>
-        <li><span>Copies Available: </span><%= numAvailableBookInstances %></li>
-        <li><span>Authors: </span><%= numAuthors %></li>
-        <li><span>Genres: </span><%= numGenres %></li>
+    <ul class="counts-list ">
+        <li><span class="font-weight-bold">Books: </span><%= numBooks %></li>
+        <li><span class="font-weight-bold">Copies: </span><%= numBookInstances %></li>
+        <li><span class="font-weight-bold">Copies Available: </span><%= numAvailableBookInstances %></li>
+        <li><span class="font-weight-bold">Authors: </span><%= numAuthors %></li>
+        <li><span class="font-weight-bold">Genres: </span><%= numGenres %></li>
     </ul>
 </div>
 <%- include('./partials/footer') %>
