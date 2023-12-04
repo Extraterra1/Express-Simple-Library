@@ -5,7 +5,7 @@
 <ul class=" mt-5">
     <% bookInstances.forEach(el => { %>
         <li class="item">
-            <h4><%= el.book.title %> - <%= el.imprint %> - <span class="<%= el.status === 'Available' ? 'text-success' : el.status === 'Maintenance' ? 'text-danger' : 'text-warning' %>"><%= el.status %> <%= el.status!=='Available' ? `(Due ${moment(el.due_back).format('MMM DD YYYY')})` : '' %></span></h4>
+            <h4><%= el.book.title %> - <%= el.imprint %> - <span class="<%= el.status === 'Available' ? 'text-success' : el.status === 'Maintenance' ? 'text-danger' : 'text-warning' %>"><%= el.status %> <%= el.status!=='Available' ? `(Due ${el.formattedDate})` : '' %></span></h4>
         </li>
     <% }) %>
     </ul>
