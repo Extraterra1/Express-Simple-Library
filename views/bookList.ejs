@@ -1,0 +1,21 @@
+<%- include('./partials/header.ejs', {title}) %>
+<div class="title text-center mt-5">
+  <h2>Books</h2>
+</div>
+<div class="container">
+  <div class="grid">
+    <% books.forEach(book => { %>
+    <div class="card text-dark" style="width: 18rem">
+      <div class="card-body">
+        <h5 class="card-title"><%= book.title %></h5>
+        <h6 class="card-subtitle mb-2 text-muted"><%= book.author.name %></h6>
+        <p class="card-text">
+          <%= book.summary.split(' ').slice(0,25).join(' ')  %>...
+        </p>
+        <a href="<%= book.url %>" class="card-link">Details</a>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</div>
+<%- include('./partials/footer.ejs') %>
