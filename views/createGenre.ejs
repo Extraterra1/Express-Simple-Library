@@ -1,0 +1,14 @@
+<%- include('./partials/header.ejs') %>
+<div class="title mt-5">
+    <h2>Create New Genre</h2>
+</div>
+<form class="mt-5 ml-3" action="/catalog/genre/create" method="POST">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="genreName">Name</label>
+      <input type="text" class="form-control" id="genreName" placeholder="Genre Name" name="name">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Sign in</button>
+</form>
+<%- include('./partials/footer.ejs') %>

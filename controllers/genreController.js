@@ -2,6 +2,7 @@ const Genre = require('../models/genreModel.js');
 const Book = require('../models/bookModel.js');
 const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
+const { body, validationResult } = require('express-validator');
 
 // Display list of all Genre.
 exports.genre_list = asyncHandler(async (req, res, next) => {
@@ -28,7 +29,7 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
 
 // Display Genre create form on GET.
 exports.genre_create_get = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Genre create GET');
+  res.render('createGenre', { title: 'Create Genre | Lil Library' });
 });
 
 // Handle Genre create on POST.
