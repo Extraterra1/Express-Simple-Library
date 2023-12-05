@@ -1,0 +1,45 @@
+<%- include('./partials/header.ejs') %>
+<div class="title mt-5">
+    <h2>Create New Book Instance</h2>
+</div>
+<form class="w-75 mt-5 ml-3" method="POST">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="author">Book</label>
+        <select class="form-control" name="book" id="book">
+          <% books.forEach(el => { %>
+              <option value="<%= el._id %>"><%= el.title %></option>
+          <% }) %>
+        </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="title">Imprint</label>
+            <input type="text" class="form-control" id="imprint" name="imprint" placeholder="Imprint">
+        </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="dueBack">Date When Book Available</label>
+      <input type="date" class="form-control" id="dueBack" name="dueBack">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="status">Status</label>
+      <select class="form-control" name="status" id="status">
+        <option value='Available'>Available</option>
+        <option value="Maintenance">Maintenance</option>
+        <option value="Loaned">Loaned</option>
+        <option value="Reserved">Reserved</option>
+      </select>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <% if (typeof errors !== 'undefined') { %>
+    <ul class="mt-5 text-danger">
+        <% errors.forEach(el => { %>
+            <li><%= el.msg %></li>
+        <% }) %>
+    </ul>
+  <% } %>
+</form>
+<%- include('./partials/footer.ejs') %>
+

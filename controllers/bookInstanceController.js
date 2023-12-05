@@ -31,7 +31,7 @@ exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
 // Display BookInstance create form on GET.
 exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
   const books = await Book.find().sort({ title: 1 }).exec();
-  res.render('bookInstanceDetail', { title: 'Book Instance | Lil Library', books });
+  res.render('bookInstanceCreate', { title: 'Book Instance | Lil Library', books });
 });
 
 // Handle BookInstance create on POST.
@@ -53,7 +53,7 @@ exports.bookinstance_create_post = [
     if (!errors.isEmpty()) {
       // Fetch all books to populate form
       const books = await Book.find().sort({ title: 1 }).exec();
-      return res.render('bookInstanceDetail', { title: 'Book Instance | Lil Library', books, errors: errors.array() });
+      return res.render('bookInstanceCreate', { title: 'Book Instance | Lil Library', books, errors: errors.array() });
     }
     await newBookInstance.save();
     res.redirect(newBookInstance.url);
