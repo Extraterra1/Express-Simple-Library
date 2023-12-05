@@ -53,7 +53,8 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
 
 // Display book create form on GET.
 exports.book_create_get = asyncHandler(async (req, res, next) => {
-  res.render('createBook', { title: 'Create Book | Lil Library' });
+  const [authors, genres] = await Promise.all([Author.find().sort({ family_name: 1 }).exec(), Genre.find().sort({ name: 1 }).exec()]);
+  res.render('createBook', { title: 'Create Book | Lil Library', authors, genres });
 });
 
 // Handle book create on POST.
