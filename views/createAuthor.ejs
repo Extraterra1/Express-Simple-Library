@@ -1,0 +1,26 @@
+<%- include('./partials/header.ejs') %>
+<div class="title mt-5">
+    <h2>Create New Genre</h2>
+</div>
+<form class="mt-5 ml-3" method="POST">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="firstName" name="firstName">First Name</label>
+      <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="lastName">Last Name</label>
+      <input type="Text" class="form-control" id="lastName" name="lastName" placeholder="Last Name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="dob">Date of Birth</label>
+    <input type="date" class="form-control" id="dob" name="dob" placeholder="1234 Main St">
+  </div>
+  <div class="form-group">
+    <label for="dod">Date of Death</label>
+    <input type="date" class="form-control" id="dod" name="dod" placeholder="1234 Main St">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<%- include('./partials/header.ejs') %>
