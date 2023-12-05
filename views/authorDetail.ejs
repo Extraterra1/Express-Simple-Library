@@ -12,5 +12,8 @@
             <p><%= book.summary %></p>
         <% }) %>
     </div>
+    <% if (books.length === 0) { %>
+        <h3 class="text-center mt-5">There are no books</h3>
+    <% } %>
 </div>
 <%- include('./partials/footer.ejs') %>
