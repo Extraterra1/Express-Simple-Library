@@ -28,14 +28,29 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
 });
 
 // Display Genre create form on GET.
-exports.genre_create_get = asyncHandler(async (req, res, next) => {
+exports.genre_create_get = asyncHandler((req, res, next) => {
   res.render('createGenre', { title: 'Create Genre | Lil Library' });
 });
 
 // Handle Genre create on POST.
-exports.genre_create_post = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Genre create POST');
-});
+exports.genre_create_post = [
+  // Validate Name Field
+  body('name', 'Genre name must be at least 3 characters long').trim().isLength({ min: 3 }).escape(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const newGenre = new Genre({ name: req.body.name });
+    // If there are errors render create genre form again
+    if (!errors.isEmpty()) {
+      return res.render('createGenre', { title: 'Create Genre | Lil Library', newGenre, errors: errors.array() });
+    }
+    // Else check if genre already exists
+    const genreExists = await Genre.findOne({ name: req.body.name }).exec();
+    if (genreExists) return res.redirect(genreExists.url);
+    await newGenre.save();
+    res.redirect(newGenre.url);
+  })
+];
 
 // Display Genre delete form on GET.
 exports.genre_delete_get = asyncHandler(async (req, res, next) => {

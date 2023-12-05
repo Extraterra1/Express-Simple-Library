@@ -1,4 +1,4 @@
-<%- include('./partials/header.ejs') %>
+<%- include('./partials/header.ejs', {title}) %>
 <div class="title mt-5">
     <h2>Create New Genre</h2>
 </div>
@@ -9,6 +9,13 @@
       <input type="text" class="form-control" id="genreName" placeholder="Genre Name" name="name">
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Sign in</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <% if (typeof errors !== 'undefined') { %>
+    <ul class="mt-5 text-danger">
+        <% errors.forEach(el => { %>
+            <li><%= el.msg %></li>
+        <% }) %>
+    </ul>
+  <% } %>
 </form>
 <%- include('./partials/footer.ejs') %>
