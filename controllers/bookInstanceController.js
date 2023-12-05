@@ -35,9 +35,30 @@ exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle BookInstance create on POST.
-exports.bookinstance_create_post = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: BookInstance create POST');
-});
+exports.bookinstance_create_post = [
+  // Validate Fields
+  body('book', 'Book must be specified').trim().isLength({ min: 1 }).escape(),
+  body('imprint', 'Imprint must be specified').trim().isLength({ min: 1 }).escape(),
+  body('status').escape(),
+  body('dueBack', 'Invalid Date').isISO8601().toDate(),
+
+  // Process Request
+  asyncHandler(async (req, res, next) => {
+    // Extract errors
+    const errors = validationResult(req);
+
+    //  Create new book instance object
+    const newBookInstance = new BookInstance({ book: req.body.book, imprint: req.body.imprint, status: req.body.status, due_back: req.body.dueBack });
+
+    if (!errors.isEmpty()) {
+      // Fetch all books to populate form
+      const books = await Book.find().sort({ title: 1 }).exec();
+      return res.render('bookInstanceDetail', { title: 'Book Instance | Lil Library', books, errors: errors.array() });
+    }
+    await newBookInstance.save();
+    res.redirect(newBookInstance.url);
+  })
+];
 
 // Display BookInstance delete form on GET.
 exports.bookinstance_delete_get = asyncHandler(async (req, res, next) => {
