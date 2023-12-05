@@ -2,6 +2,7 @@ const Author = require('../models/authorModel');
 const Book = require('../models/bookModel');
 const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
+const { body, validationResult } = require('express-validator');
 
 // Display list of all Authors.
 exports.author_list = asyncHandler(async (req, res, next) => {
@@ -32,9 +33,37 @@ exports.author_create_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle Author create on POST.
-exports.author_create_post = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Author create POST');
-});
+exports.author_create_post = [
+  // Validate Info
+  body('firstName')
+    .trim()
+    .isLength({ min: 2 })
+    .escape()
+    .withMessage('First name must be at least 2 characters long')
+    .isAlphanumeric()
+    .withMessage('First name can only contain letters and numbers'),
+  body('lastName')
+    .trim()
+    .isLength({ min: 2 })
+    .escape()
+    .withMessage('Last name must be at least 2 characters long')
+    .isAlphanumeric()
+    .withMessage('Last name can only contain letters and numbers'),
+  body('dob', 'Invalid date of birth').isISO8601().toDate(),
+  body('dod', 'Invalid date of death').isISO8601().toDate(),
+
+  asyncHandler((req, res, next) => {
+    const errors = validationResult(req);
+
+    const newAuthor = new Author({ first_name: req.body.firstName, family_name: req.body.lastName, date_of_birth: req.body.dob, date_of_death: req.body.dod });
+
+    if (!errors.isEmpty()) {
+      return res.render('createAuthor', { title: 'Create Author | Lil Library', newAuthor, errors: errors.array() });
+    }
+    newAuthor.save();
+    res.redirect(newAuthor.url);
+  })
+];
 
 // Display Author delete form on GET.
 exports.author_delete_get = asyncHandler(async (req, res, next) => {
