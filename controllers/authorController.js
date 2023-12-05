@@ -28,7 +28,7 @@ exports.author_detail = asyncHandler(async (req, res, next) => {
 
 // Display Author create form on GET.
 exports.author_create_get = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Author create GET');
+  res.render('createAuthor', { title: 'Create Author | Lil Library' });
 });
 
 // Handle Author create on POST.
