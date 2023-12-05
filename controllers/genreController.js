@@ -46,7 +46,10 @@ exports.genre_create_post = [
     }
     // Else check if genre already exists
     const genreExists = await Genre.findOne({ name: req.body.name }).exec();
+
     if (genreExists) return res.redirect(genreExists.url);
+
+    // if it doesn't insert
     await newGenre.save();
     res.redirect(newGenre.url);
   })
