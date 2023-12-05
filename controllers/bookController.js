@@ -4,6 +4,7 @@ const BookInstance = require('../models/bookInstanceModel.js');
 const Genre = require('../models/genreModel.js');
 const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
+const { body, validationResult } = require('express-validator');
 
 exports.index = asyncHandler(async (req, res, next) => {
   const [numBooks, numBookInstances, numAvailableBookInstances, numAuthors, numGenres] = await Promise.all([
@@ -58,9 +59,39 @@ exports.book_create_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle book create on POST.
-exports.book_create_post = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Book create POST');
-});
+exports.book_create_post = [
+  // Put genres into array
+  (req, res, next) => {
+    if (!Array.isArray(req.body.genre)) {
+      req.body.genre = typeof req.body.genre === 'undefined' ? [] : [req.body.genre];
+    }
+    next();
+  },
+
+  //  Validate fields
+  body('title', 'Title must not be empty').trim().isLength({ min: 1 }).escape(),
+  body('author', 'Author must not be empty').trim().isLength({ min: 1 }).escape(),
+  body('summary', 'Summary must not be empty').trim().isLength({ min: 1 }).escape(),
+  body('isbn', 'ISBN must not be empty').trim().isLength({ min: 1 }).escape(),
+  body('genre', 'You must select at least one genre').custom((val) => val.length > 0),
+
+  asyncHandler(async (req, res, next) => {
+    // Extract errors
+    const errors = validationResult(req);
+    console.log(errors);
+    // Build new book object
+    const newBook = new Book({ title: req.body.title, author: req.body.author, summary: req.body.summary, genre: req.body.genre, isbn: req.body.isbn });
+
+    if (!errors.isEmpty()) {
+      // There are errors
+      // Fetch all authors and genres to populate form
+      const [authors, genres] = await Promise.all([Author.find().sort({ family_name: 1 }).exec(), Genre.find().sort({ name: 1 }).exec()]);
+      return res.render('createBook', { title: 'Create Book | Lil Library', authors, genres, errors: errors.array() });
+    }
+    await newBook.save();
+    res.redirect(newBook.url);
+  })
+];
 
 // Display book delete form on GET.
 exports.book_delete_get = asyncHandler(async (req, res, next) => {
