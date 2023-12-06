@@ -105,7 +105,29 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display book update form on GET.
 exports.book_update_get = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Book update GET');
+  const [book, authors, genres] = await Promise.all([
+    Book.findById(req.params.id).exec(),
+    Author.find().sort({ family_name: 1 }).exec(),
+    Genre.find().sort({ name: 1 }).exec()
+  ]);
+
+  if (book === null) return next(new Error('Book not found'));
+
+  // Mark selected genres as checked
+  for (const genre of genres) {
+    for (const bookGenre of book.genre) {
+      if (genre._id.toString() === bookGenre._id.toString()) {
+        genre.checked = 'true';
+      }
+    }
+  }
+
+  res.render('createBook', {
+    title: 'Update Book | Lil Library',
+    authors,
+    genres,
+    book
+  });
 });
 
 // Handle book update on POST.
