@@ -95,7 +95,10 @@ exports.book_create_post = [
 
 // Display book delete form on GET.
 exports.book_delete_get = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Book delete GET');
+  const [book, bookInstancesByAuthor] = await Promise.all([Book.findById(req.params.id).exec(), BookInstance.find({ book: req.params.id }).exec()]);
+
+  if (book === null) return res.redirect('/catalog/authors');
+  res.render('bookDelete', { title: 'Delete Book | Lil Library', book, bookInstancesByAuthor });
 });
 
 // Handle book delete on POST.
