@@ -1,0 +1,15 @@
+<%- include('./partials/header.ejs') %>
+<div class="title mt-5">
+    <h2>Delete Copy: <%= bookInstance.imprint %></h2>
+</div>
+<div class="mt-5 ml-3">
+
+    <h4>Do you really want to delete this copy?</h4>
+    <form action="" method="POST">
+        <input type="hidden" name="bookInstanceId" value="<%= bookInstance._id %>" required>
+        <button class="btn btn-primary">Delete</button>
+    </form>
+
+</div>
+
+<%- include('./partials/footer.ejs') %>
