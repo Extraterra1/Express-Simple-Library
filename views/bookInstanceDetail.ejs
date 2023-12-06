@@ -9,5 +9,8 @@
     <% if (bookInstance.status !== 'Available') { %>
         <p><span class="font-weight-bold">Due Back: </span><%= bookInstance.formattedDate %></p>
     <% } %>
+    <hr class="border-light">
+    <p class="btn btn-light "><a class="text-dark" href="<%= bookInstance.url + '/delete' %>">Delete Copy</a></p>
+    <p class="btn btn-light "><a class="text-dark" href="<%= bookInstance.url + '/update' %>">Update Copy</a></p>
 </div>
 <%- include('./partials/footer.ejs') %>
