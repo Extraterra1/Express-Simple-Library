@@ -63,7 +63,9 @@ exports.book_create_post = [
   // Put genres into array
   (req, res, next) => {
     if (!Array.isArray(req.body.genre)) {
+      console.log(req.body.genre);
       req.body.genre = typeof req.body.genre === 'undefined' ? [] : [req.body.genre];
+      console.log(req.body.genre);
     }
     next();
   },
@@ -103,7 +105,13 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
 
 // Handle book delete on POST.
 exports.book_delete_post = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Book delete POST');
+  const [book, bookInstancesByAuthor] = await Promise.all([Book.findById(req.params.id).exec(), BookInstance.find({ author: req.params.id }).exec()]);
+
+  if (bookInstancesByAuthor.length > 0) return res.render('bookDelete', { title: 'Delete Book | Lil Library', book, bookInstancesByAuthor });
+
+  // Author has no books. Delete.
+  await Book.findByIdAndDelete(req.params.id);
+  res.redirect('/catalog/books');
 });
 
 // Display book update form on GET.
