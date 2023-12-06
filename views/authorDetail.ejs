@@ -15,5 +15,7 @@
     <% if (books.length === 0) { %>
         <h3 class="text-center mt-5">There are no books</h3>
     <% } %>
+    <hr class="border-light">
+    <p class="btn btn-light "><a class="text-dark" href="<%= author.url + '/delete' %>">Delete Author</a></p>
 </div>
 <%- include('./partials/footer.ejs') %>
