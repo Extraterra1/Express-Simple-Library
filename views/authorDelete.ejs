@@ -1,0 +1,27 @@
+<%- include('./partials/header.ejs') %>
+<div class="title mt-5">
+    <h2>Delete Author: <%= author.name %></h2>
+    <p><%= `${author.formattedDob} - ${author.formattedDod}` %></p>
+</div>
+<div class="mt-5 ml-3">
+<% if (booksByAuthor.length > 0) { %>
+    
+    <h4>Delete the following books before attempting to delete this author</h4>
+    <hr class="border-light">
+    <h4>Books</h4>
+    <ul>
+        <% booksByAuthor.forEach(el => { %>
+        <li><a href="<%= el.url %>"><%= el.title %></a></li>
+        <% }) %>
+    </ul>
+    
+<% }else{ %>
+    <h4>Do you really want to delete this author?</h4>
+    <form action="" method="POST">
+        <input type="hidden" name="authorId" value="<%= author._id %>" required>
+        <button class="btn btn-primary">Delete</button>
+    </form>
+<% } %>
+</div>
+
+<%- include('./partials/footer.ejs') %>
