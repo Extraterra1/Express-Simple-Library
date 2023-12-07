@@ -86,8 +86,9 @@ exports.author_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display Author update form on GET.
 exports.author_update_get = asyncHandler(async (req, res, next) => {
-  const author = Author.findById(req.params.id);
-  if (author === null) return next(new Error('Author not found'));
+  if (!mongoose.isValidObjectId(req.params.id)) return next(new Error('Author not found'));
+  const author = await Author.findById(req.params.id);
+  if (!author) return next(new Error('Author not found'));
   res.render('createAuthor', { title: 'Update Author | Lil Library', author });
 });
 
