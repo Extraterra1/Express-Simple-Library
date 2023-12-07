@@ -14,13 +14,13 @@
         </div>
         <div class="form-group col-md-6">
             <label for="title">Imprint</label>
-            <input type="text" class="form-control" id="imprint" name="imprint" placeholder="Imprint">
+            <input type="text" class="form-control" id="imprint" name="imprint" placeholder="Imprint" value="<%= typeof bookInstance !== 'undefined' ? bookInstance.imprint : '' %>">
         </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="dueBack">Date When Book Available</label>
-      <input type="date" class="form-control" id="dueBack" name="dueBack">
+      <input type="date" class="form-control" id="dueBack" name="dueBack" value="<%= typeof bookInstance !== 'undefined' ? bookInstance.due_back : '' %>">
     </div>
     <div class="form-group col-md-6">
       <label for="status">Status</label>

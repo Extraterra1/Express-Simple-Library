@@ -1,6 +1,7 @@
 const BookInstance = require('../models/bookInstanceModel.js');
 const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
+const moment = require('moment');
 const { body, validationResult } = require('express-validator');
 const Book = require('../models/bookModel.js');
 
@@ -77,7 +78,12 @@ exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
   if (!mongoose.isValidObjectId(req.params.id)) return next(new Error('Copy not found'));
   const [bookInstance, books] = await Promise.all([BookInstance.findById(req.params.id).exec(), Book.find().sort({ title: 1 }).exec()]);
   if (!bookInstance) return next(new Error('Copy not found'));
-  res.render('bookInstanceCreate', { title: 'Update Copy | Lil Library', bookInstance, books });
+
+  res.render('bookInstanceCreate', {
+    title: 'Update Copy | Lil Library',
+    bookInstance: { ...bookInstance, due_back: moment(bookInstance.due_back).format('YYYY-MM-DD') },
+    books
+  });
 });
 
 // Handle bookinstance update on POST.
