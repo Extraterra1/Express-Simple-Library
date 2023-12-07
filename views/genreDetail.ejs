@@ -15,7 +15,11 @@
     <% if (booksInGenre.length === 0) { %>
         <h3 class="text-center mt-5">There are no books</h3>
     <% } %>
+    
   </div>
 </div>
+<hr class="border-light">
+<p class="btn btn-light "><a class="text-dark" href="<%= genre.url + '/delete' %>">Delete Genre</a></p>
+<p class="btn btn-light "><a class="text-dark" href="<%= genre.url + '/update' %>">Update Genre</a></p>
 <h6 class="text-center mt-5"><a href="/catalog/genres">Back to Genres</a></h4>
 <%- include('./partials/footer.ejs') %>
