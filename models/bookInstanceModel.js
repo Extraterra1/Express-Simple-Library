@@ -17,7 +17,7 @@ bookInstanceSchema.virtual('url').get(function () {
 });
 bookInstanceSchema.virtual('formattedDate').get(function () {
   // We don't use an arrow function as we'll need the this object
-  return moment(this.due_date).format('MMM DD YYYY');
+  return moment(this.due_back).format('MMM DD YYYY');
 });
 
 module.exports = mongoose.model('BookInstance', bookInstanceSchema);

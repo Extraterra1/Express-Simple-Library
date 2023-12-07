@@ -87,6 +87,32 @@ exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle bookinstance update on POST.
-exports.bookinstance_update_post = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: BookInstance update POST');
-});
+exports.bookinstance_update_post = [
+  // Validate Fields
+  body('book', 'Book must be specified').trim().isLength({ min: 1 }).escape(),
+  body('imprint', 'Imprint must be specified').trim().isLength({ min: 1 }).escape(),
+  body('status').escape(),
+  body('dueBack', 'Invalid Date').isISO8601().toDate(),
+
+  asyncHandler(async (req, res, next) => {
+    // Extract errors
+    const errors = validationResult(req);
+
+    //  Create new book instance object
+    const bookInstance = new BookInstance({
+      book: req.body.book,
+      imprint: req.body.imprint,
+      status: req.body.status,
+      due_back: req.body.dueBack,
+      _id: req.params.id
+    });
+
+    if (!errors.isEmpty()) {
+      // Fetch all books to populate form
+      const books = await Book.find().sort({ title: 1 }).exec();
+      return res.render('bookInstanceCreate', { title: 'Update Copy | Lil Library', books, bookInstance, errors: errors.array() });
+    }
+    await BookInstance.findByIdAndUpdate(req.params.id, bookInstance);
+    res.redirect(bookInstance.url);
+  })
+];
