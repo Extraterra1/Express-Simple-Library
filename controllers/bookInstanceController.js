@@ -74,7 +74,10 @@ exports.bookinstance_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display BookInstance update form on GET.
 exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: BookInstance update GET');
+  if (!mongoose.isValidObjectId(req.params.id)) return next(new Error('Copy not found'));
+  const bookInstance = await BookInstance.findById(req.params.id);
+  if (!bookInstance) return next(new Error('Copy not found'));
+  res.render('bookInstanceCreate', { title: 'Update Copy | Lil Library', bookInstance });
 });
 
 // Handle bookinstance update on POST.
