@@ -8,7 +8,7 @@
         <label for="author">Book</label>
         <select class="form-control" name="book" id="book">
           <% books.forEach(el => { %>
-              <option value="<%= el._id %>"><%= el.title %></option>
+              <option <%= typeof bookInstance !== 'undefined' && bookInstance.book.toString() === el._id.toString() ? 'selected' : '' %> value="<%= el._id %>"><%= el.title %></option>
           <% }) %>
         </select>
         </div>
@@ -25,10 +25,10 @@
     <div class="form-group col-md-6">
       <label for="status">Status</label>
       <select class="form-control" name="status" id="status">
-        <option value='Available'>Available</option>
-        <option value="Maintenance">Maintenance</option>
-        <option value="Loaned">Loaned</option>
-        <option value="Reserved">Reserved</option>
+        <option <%= typeof bookInstance !== 'undefined' && bookInstance.status === 'Available' ? 'selected' : '' %> value='Available'>Available</option>
+        <option <%= typeof bookInstance !== 'undefined' && bookInstance.status === 'Maintenance' ? 'selected' : '' %> value="Maintenance">Maintenance</option>
+        <option <%= typeof bookInstance !== 'undefined' && bookInstance.status === 'Loaned' ? 'selected' : '' %> value="Loaned">Loaned</option>
+        <option <%= typeof bookInstance !== 'undefined' && bookInstance.status === 'Reserved' ? 'selected' : '' %> value="Reserved">Reserved</option>
       </select>
     </div>
   </div>
@@ -42,4 +42,3 @@
   <% } %>
 </form>
 <%- include('./partials/footer.ejs') %>
-

@@ -76,7 +76,7 @@ exports.bookinstance_delete_post = asyncHandler(async (req, res, next) => {
 // Display BookInstance update form on GET.
 exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
   if (!mongoose.isValidObjectId(req.params.id)) return next(new Error('Copy not found'));
-  const [bookInstance, books] = await Promise.all([BookInstance.findById(req.params.id).exec(), Book.find().sort({ title: 1 }).exec()]);
+  const [bookInstance, books] = await Promise.all([BookInstance.findById(req.params.id).lean().exec(), Book.find().sort({ title: 1 }).exec()]);
   if (!bookInstance) return next(new Error('Copy not found'));
 
   res.render('bookInstanceCreate', {
