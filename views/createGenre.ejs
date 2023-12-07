@@ -6,7 +6,7 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="genreName">Name</label>
-      <input type="text" class="form-control" id="genreName" placeholder="Genre Name" name="name">
+      <input type="text" class="form-control" id="genreName" placeholder="Genre Name" name="name" value="<%= typeof genre !== 'undefined' ? genre.name : '' %>">
     </div>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
