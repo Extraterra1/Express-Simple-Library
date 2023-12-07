@@ -93,6 +93,40 @@ exports.author_update_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle Author update on POST.
-exports.author_update_post = asyncHandler(async (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Author update POST');
-});
+exports.author_update_post = [
+  // Validate Info
+  body('firstName')
+    .trim()
+    .isLength({ min: 2 })
+    .escape()
+    .withMessage('First name must be at least 2 characters long')
+    .isAlphanumeric()
+    .withMessage('First name can only contain letters and numbers'),
+  body('lastName')
+    .trim()
+    .isLength({ min: 2 })
+    .escape()
+    .withMessage('Last name must be at least 2 characters long')
+    .isAlphanumeric()
+    .withMessage('Last name can only contain letters and numbers'),
+  body('dob', 'Invalid date of birth').isISO8601().toDate(),
+  body('dod', 'Invalid date of death').isISO8601().toDate(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const author = new Author({
+      first_name: req.body.firstName,
+      family_name: req.body.lastName,
+      date_of_birth: req.body.dob,
+      date_of_death: req.body.dod,
+      _id: req.params.id
+    });
+
+    if (!errors.isEmpty()) {
+      return res.render('createAuthor', { title: 'Create Author | Lil Library', author, errors: errors.array() });
+    }
+    await Author.findByIdAndUpdate(req.params.id, author);
+    res.redirect(author.url);
+  })
+];
